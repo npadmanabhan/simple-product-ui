@@ -49,7 +49,7 @@ export default function ProductForm() {
   const fields = [
     { name: 'name', label: 'Name', type: 'text' },
     { name: 'sku', label: 'SKU', type: 'text' },
-    { name: 'price', label: 'Price', type: 'number' },
+    { name: 'price', label: 'Price', type: 'number', step: '0.01' },
     { name: 'quantity', label: 'Quantity', type: 'number' },
   ];
 
@@ -58,7 +58,7 @@ export default function ProductForm() {
       <h1>{isEdit ? 'Edit Product' : 'New Product'}</h1>
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '12px', maxWidth: '400px' }}>
-        {fields.map(({ name, label, type }) => (
+        {fields.map(({ name, label, type, step }) => (
           <label key={name} style={{ display: 'flex', flexDirection: 'column', gap: '4px' }}>
             {label}
             <input
@@ -68,6 +68,7 @@ export default function ProductForm() {
               onChange={handleChange}
               required
               min={type === 'number' ? 0 : undefined}
+              step={step}
             />
           </label>
         ))}
