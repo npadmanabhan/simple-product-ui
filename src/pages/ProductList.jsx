@@ -31,47 +31,58 @@ export default function ProductList() {
 
   return (
     <div>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Products</h1>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-2xl font-bold text-gray-800">Products</h2>
         <Link to="/products/new">
-          <button>+ New Product</button>
+          <button className="inline-flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors cursor-pointer">
+            + New Product
+          </button>
         </Link>
       </div>
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+      {error && (
+        <div className="mb-4 px-4 py-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+          {error}
+        </div>
+      )}
 
       {products.length === 0 ? (
-        <p>No products found.</p>
+        <div className="text-center py-16 text-gray-400 text-sm">No products found.</div>
       ) : (
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr>
-              {['Name', 'SKU', 'Price', 'Quantity', 'Actions'].map((h) => (
-                <th key={h} style={{ textAlign: 'left', borderBottom: '1px solid #ccc', padding: '8px' }}>
-                  {h}
-                </th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {products.map((p) => (
-              <tr key={p._id}>
-                <td style={{ padding: '8px' }}>{p.name}</td>
-                <td style={{ padding: '8px' }}>{p.sku}</td>
-                <td style={{ padding: '8px' }}>${p.price.toFixed(2)}</td>
-                <td style={{ padding: '8px' }}>{p.quantity}</td>
-                <td style={{ padding: '8px', display: 'flex', gap: '8px' }}>
-                  <Link to={`/products/${p._id}/edit`}>
-                    <button>Edit</button>
-                  </Link>
-                  <button onClick={() => handleDelete(p._id)} style={{ color: 'red' }}>
-                    Delete
-                  </button>
-                </td>
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="bg-gray-50 border-b border-gray-200 text-left text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                {['Name', 'SKU', 'Price', 'Quantity', 'Actions'].map((h) => (
+                  <th key={h} className="px-6 py-3">{h}</th>
+                ))}
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody className="divide-y divide-gray-100">
+              {products.map((p) => (
+                <tr key={p._id} className="hover:bg-gray-50 transition-colors">
+                  <td className="px-6 py-4 font-medium text-gray-800">{p.name}</td>
+                  <td className="px-6 py-4 text-gray-500 font-mono text-xs">{p.sku}</td>
+                  <td className="px-6 py-4 text-gray-700">${p.price.toFixed(2)}</td>
+                  <td className="px-6 py-4 text-gray-700">{p.quantity}</td>
+                  <td className="px-6 py-4 flex gap-2">
+                    <Link to={`/products/${p._id}/edit`}>
+                      <button className="text-xs px-3 py-1.5 rounded-md border border-gray-300 text-gray-600 hover:bg-gray-100 transition-colors cursor-pointer">
+                        Edit
+                      </button>
+                    </Link>
+                    <button
+                      onClick={() => handleDelete(p._id)}
+                      className="text-xs px-3 py-1.5 rounded-md border border-red-200 text-red-600 hover:bg-red-50 transition-colors cursor-pointer"
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
       )}
     </div>
   );
