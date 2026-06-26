@@ -1,10 +1,12 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { ToastProvider } from './components/Toast';
+import ErrorBoundary from './components/ErrorBoundary';
 import ProductList from './pages/ProductList';
 import ProductForm from './pages/ProductForm';
 
 export default function App() {
   return (
+    <ErrorBoundary>
     <ToastProvider>
       <BrowserRouter>
         <div className="min-h-screen bg-slate-50">
@@ -32,5 +34,6 @@ export default function App() {
         </div>
       </BrowserRouter>
     </ToastProvider>
+    </ErrorBoundary>
   );
 }
