@@ -96,3 +96,29 @@ docker build \
 ```
 
 Cloud Run health check path: `GET /healthz`
+
+---
+
+## CI/CD
+
+The pipeline (`.github/workflows/ci.yml`) runs on every push and pull request to `main`:
+
+1. **Lint & Build** — `npm run lint` + `npm run build` (runs on PRs and pushes)
+2. **Build & Push** — builds the Docker image and pushes to Google Artifact Registry (pushes to `main` only)
+
+`VITE_API_URL` is read from the `VITE_API_URL` GitHub Actions variable and baked into the bundle at Docker build time. Images are tagged `latest` and `sha-<short>`.
+
+### Required GitHub configuration
+
+Set the following in **Settings → Secrets and variables → Actions**:
+
+| Name | Type | Value |
+|------|------|-------|
+| `WIF_PROVIDER` | Secret | `projects/PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/providers/github-provider` |
+| `WIF_SERVICE_ACCOUNT` | Secret | `github-actions@PROJECT_ID.iam.gserviceaccount.com` |
+| `GCP_PROJECT_ID` | Variable | your GCP project ID |
+| `GAR_REGION` | Variable | Artifact Registry region, e.g. `us-central1` |
+| `GAR_REPO` | Variable | Artifact Registry repository name, e.g. `product-images` |
+| `VITE_API_URL` | Variable | deployed Cloud Run URL of product-api |
+
+> The one-time GCP setup (Artifact Registry repo, Workload Identity Pool, Service Account) is the same as for product-api — see [simple-product-api](https://github.com/npadmanabhan/simple-product-api#cicd). Run the final `add-iam-policy-binding` step a second time, substituting `npadmanabhan/simple-product-ui` as the repository.
