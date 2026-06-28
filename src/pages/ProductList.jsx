@@ -30,7 +30,7 @@ export default function ProductList() {
     setLoading(true);
     getAll()
       .then(({ data }) => { if (!cancelled) setProducts(data.data); })
-      .catch(() => { if (!cancelled) addToast('Failed to load products.', 'error'); })
+      .catch((err) => { console.error('Failed to load products', err); if (!cancelled) addToast('Failed to load products.', 'error'); })
       .finally(() => { if (!cancelled) setLoading(false); });
     return () => { cancelled = true; };
   }, []);
